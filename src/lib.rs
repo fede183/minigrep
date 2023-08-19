@@ -35,8 +35,6 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         println!("{}\n", line);
     }
     
-    println!("With test:\n{}", contents);
-    
     Ok(())
 }
 
