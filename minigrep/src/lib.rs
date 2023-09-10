@@ -2,6 +2,13 @@ use std::fs;
 use std::error::Error;
 use std::env;
 
+/// Used as input for minigrep
+///
+/// Includes:
+/// query: the pattern for the search
+/// filename: the name of the file were the search will be conducted
+/// case_sensitive: if true then the search will be conducted as case sensitive
+///
 pub struct Config {
     pub query: String,
     pub filename: String,
@@ -30,6 +37,17 @@ impl Config {
     }
 }
 
+/// An grep clone that is useless for real application an only replicate the most basic
+/// caracteristics of the original one
+///
+/// # Example
+/// ```
+/// let config = Config { query: "Somebody", filename: "poem.txt", case_sensitive: true };
+/// run(config);
+/// ```
+/// This example will return:
+/// How dreary – to be – Somebody!
+///
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
     
