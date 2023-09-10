@@ -42,7 +42,9 @@ impl Config {
 ///
 /// # Example
 /// ```
-/// let config = Config { query: "Somebody", filename: "poem.txt", case_sensitive: true };
+/// use minigrep::{Config, run};
+///
+/// let config = Config { query: "Somebody".to_string(), filename: "poem.txt".to_string(), case_sensitive: true };
 /// run(config);
 /// ```
 /// This example will return:
@@ -72,15 +74,10 @@ fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 
 fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
-    let mut results = Vec::new();
 
-    for line in contents.lines() {
-        if line.to_lowercase().contains(&query) {
-            results.push(line); 
-        }
-    }
-
-    results
+    contents.lines()
+        .filter(|line| line.to_lowercase().contains(&query))
+        .collect()
 }
 
 
