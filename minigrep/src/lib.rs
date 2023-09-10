@@ -1,3 +1,8 @@
+//! # Minigrep
+//!
+//! `minigrep` is a grep clone that is useless for real application an only replicate the most basic
+//! caracteristics of the original one
+
 use std::fs;
 use std::error::Error;
 use std::env;
@@ -37,8 +42,7 @@ impl Config {
     }
 }
 
-/// An grep clone that is useless for real application an only replicate the most basic
-/// caracteristics of the original one
+/// run function for minigrep
 ///
 /// # Example
 /// ```
