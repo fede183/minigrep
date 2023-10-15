@@ -1,46 +1,107 @@
+pub mod cons_list {
 
-struct MyBox<T>(T);
+    enum List {
+        Cons(i32, Box<List>),
+        Nil,
+    }
 
-impl<T> MyBox<T> {
-    fn new(x: T) -> MyBox<T> {
-        MyBox(x)
+    use List::{Cons, Nil};
+
+    pub fn create_cons_list() {
+        let a = Cons(1, 
+            Box::new(Cons(2, 
+                    Box::new(Cons(3, 
+                            Box::new(Nil)))
+                    )
+                )
+            );
+    }
+
+}
+
+pub mod cons_list_rc {
+    // With Rc<T> we can multiple ownership of a data
+    enum ListWithRc {
+        Cons(i32, Rc<ListWithRc>),
+        Nil,
+    }
+
+    use ListWithRc::{Cons, Nil};
+    use std::rc::Rc;
+
+    pub fn create_cons_list_with_rc() {
+        let a = Rc::new(Cons(5, 
+                Rc::new(Cons(10, 
+                    Rc::new(Nil))
+                    )
+                )
+            );
+        let b = Cons(3, Rc::clone(&a));
+        let c = Cons(4, Rc::clone(&a));
+    }
+
+}
+
+pub mod my_box {
+
+    struct MyBox<T>(T);
+
+    impl<T> MyBox<T> {
+        fn new(x: T) -> MyBox<T> {
+            MyBox(x)
+        }
+    }
+
+    // Reference
+    use std::ops::Deref;
+
+    impl<T> Deref for MyBox<T> {
+        type Target  = T;
+
+        fn deref(&self) -> &T {
+            &self.0
+        }
+    }
+
+    fn hello(name: &str){
+        println!("Hello, {}!", name);
+    }
+
+    pub fn deref_test() {
+        let m = MyBox::new(String::from("Rust"));
+        hello(&m);
     }
 }
 
-// Reference
-use std::ops::Deref;
+pub mod custom_smart_pointer {
 
-impl<T> Deref for MyBox<T> {
-    type Target  = T;
 
-    fn deref(&self) -> &T {
-        &self.0
+    // Smart pointers
+    pub struct CustomSmartPointer {
+        data: String,
     }
-}
 
-fn hello(name: &str){
-    println!("Hello, {}!", name);
-}
-
-pub fn deref_test() {
-    let m = MyBox::new(String::from("Rust"));
-    hello(&m);
-}
-
-// Smart pointers
-pub struct CustomSmartPointer {
-    data: String,
-}
-
-impl Drop for CustomSmartPointer {
-    fn drop(&mut self) {
-        println!("Dropping CustomSmartPointer with data `{}`!", self.data);
+    impl Drop for CustomSmartPointer {
+        fn drop(&mut self) {
+            println!("Dropping CustomSmartPointer with data `{}`!", self.data);
+        }
     }
-}
 
 
-pub fn create_and_drop() {
-    let c = CustomSmartPointer {data: String::from("my stuff")};
-    let d = CustomSmartPointer {data: String::from("other stuff")};
-    println!("CustomSmartPointer created.");
+    pub fn create_and_drop() {
+        let c = CustomSmartPointer {data: String::from("my stuff")};
+        let d = CustomSmartPointer {data: String::from("other stuff")};
+        println!("CustomSmartPointer created.");
+    }
+
+
+    use std::mem::drop;
+
+    pub fn early_drop() {
+        let c = CustomSmartPointer {data: String::from("some data") };
+        println!("CustomSmartPointer created.");
+        drop(c);
+        println!("CustomSmartPointer dropped before the end of main.");
+    }
+
 }
