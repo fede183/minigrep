@@ -1,5 +1,5 @@
 [package]
-name = "smart-pointers"
+name = "mock-message"
 version = "0.1.0"
 edition = "2021"
 
