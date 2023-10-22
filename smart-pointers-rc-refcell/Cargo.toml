@@ -1,5 +1,5 @@
 [package]
-name = "smart-pointers-rfcell"
+name = "smart-pointers-rc-refcell"
 version = "0.1.0"
 edition = "2021"
 
